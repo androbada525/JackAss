@@ -1,0 +1,67 @@
+# Xiaomi configuration options
+
+config MACH_XIAOMI
+	bool "XIAOMI device"
+	depends on ARCH_MSM
+	help
+	  Support for Xiaomi products
+
+config MACH_XIAOMI_MSM8956
+	bool "XIAOMI MSM8956"
+	depends on ARCH_MSM8916
+	select MACH_XIAOMI
+	help
+	  Support for MSM8956 Xiaomi variants
+
+menu "Xiaomi board selection"
+
+	config MACH_XIAOMI_KENZO
+		bool "XIAOMI_KENZO board"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 variant
+
+	config MACH_XIAOMI_HYDROGEN
+		bool "XIAOMI_HYDROGEN board"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Mi Max variant
+
+endmenu
+
+choice
+	prompt "AGNi variant selection"
+	depends on MACH_XIAOMI_KENZO
+
+	config MACH_XIAOMI_KENZO_AGNI_LOS_O
+		bool "XIAOMI KENZO AGNi for LineageOS-Oreo"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 AGNi LineageOS 15.x
+
+	config MACH_XIAOMI_KENZO_AGNI_LOS_N
+		bool "XIAOMI KENZO AGNi for LineageOS-Nougat"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 AGNi LineageOS 14.x
+
+	config MACH_XIAOMI_KENZO_AGNI_LOS_MM
+		bool "XIAOMI KENZO AGNi for LineageOS-MarshMallow"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 AGNi LineageOS 13.1
+
+	config MACH_XIAOMI_KENZO_AGNI_MIUI_MM
+		bool "XIAOMI KENZO AGNi for miui-MM"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 AGNi MIUI MM
+
+	config MACH_XIAOMI_KENZO_AGNI_MIUI_N
+		bool "XIAOMI KENZO AGNi for miui-N"
+		select MACH_XIAOMI_MSM8956
+		help
+		  Support for Xiaomi Redmi Note 3 AGNi MIUI N
+
+endchoice
+
