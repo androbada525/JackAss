@@ -4,14 +4,14 @@ export KERNELDIR=`readlink -f .`
 . ~/WORKING_DIRECTORY/gcc-8.x-uber_aarch64.sh
 
 echo ""
-echo " Cross-compiling AGNi pureLOS-N kernel ..."
+echo " Cross-compiling JackAss pureLOS-N kernel ..."
 echo ""
 
 cd $KERNELDIR/
 
 if [ ! -f $KERNELDIR/.config ];
 then
-    make agni_kenzo-losN_defconfig
+    make jackass_kenzo-losN_defconfig
 fi
 
 rm $KERNELDIR/arch/arm/boot/dts/*.dtb
@@ -29,5 +29,5 @@ find -name '*.ko' -exec mv -v {} $KERNELDIR/BUILT_kenzo-losN/ \;
 mv $KERNELDIR/arch/arm64/boot/Image.*-dtb $KERNELDIR/BUILT_kenzo-losN/
 
 echo ""
-echo "AGNi pureLOS-N has been built for kenzo !!!"
+echo "JackAss pureLOS-N has been built for kenzo!"
 
