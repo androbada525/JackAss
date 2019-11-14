@@ -15,7 +15,16 @@ CPPFLAGS_vmlinux.lds = -DTEXT_OFFSET=$(TEXT_OFFSET)
 OBJCOPYFLAGS	:=-O binary -R .note -R .note.gnu.build-id -R .comment -S
 GZFLAGS		:=-9
 
+LIBGCC 		:= $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+
 KBUILD_DEFCONFIG := defconfig
+
+# Optimize for big.LITTLE configuration
+ARM_ARCH_OPT	:= -mcpu=cortex-a57.cortex-a53 -mtune=cortex-a57.cortex-a53
+
+# If for some reason compiling with a toolchain that supports neither mcpu or
+# mtune (in which case, wtf?), don't tune at all (march can break assembly)
+KBUILD_CFLAGS	+= $(call cc-option,$(ARM_ARCH_OPT),)
 
 KBUILD_CFLAGS	+= -mgeneral-regs-only
 KBUILD_CFLAGS	+= -fno-pic
@@ -46,45 +55,41 @@ core-$(CONFIG_XEN)		+= arch/arm64/xen/
 core-$(CONFIG_KVM) += arch/arm64/kvm/
 core-$(CONFIG_CRYPTO) += arch/arm64/crypto/
 libs-y		:= arch/arm64/lib/ $(libs-y)
-
-suffix_$(CONFIG_KERNEL_GZIP) = gz
-suffix_$(CONFIG_KERNEL_LZ4)  = lz4
+libs-y		+= $(LIBGCC)
 
 # Default target when executing plain make
 ifeq ($(CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE),y)
-KBUILD_IMAGE	:= Image.$(suffix_y)-dtb
+KBUILD_IMAGE	:= Image.gz-dtb
 else
-KBUILD_IMAGE	:= Image.$(suffix_y)
+KBUILD_IMAGE	:= Image.gz
 endif
 
 KBUILD_DTBS	:= dtbs
 
 all:	$(KBUILD_IMAGE) $(KBUILD_DTBS)
 
-boot32 := arch/arm/boot
 boot := arch/arm64/boot
 
-Image: vmlinux
+Image Image.gz: vmlinux
 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
 
-Image.%: vmlinux
-	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
-
-zinstall install:
+zinstall install: vmlinux
 	$(Q)$(MAKE) $(build)=$(boot) $@
 
 %.dtb: scripts
-	$(Q)$(MAKE) $(build)=$(boot32)/dts $(boot32)/dts/$@
+	$(Q)$(MAKE) $(build)=$(boot)/dts $(boot)/dts/$@
 
+.PHONY: dtbs
 dtbs: scripts
-	$(Q)$(MAKE) $(build)=$(boot32)/dts dtbs
-	$(Q)$(MAKE) $(build)=$(boot32)/dts/qcom dtbs
+	$(Q)$(MAKE) $(build)=$(boot)/dts dtbs
+	$(Q)$(MAKE) $(build)=$(boot)/dts/qcom dtbs
+	@true
 
 PHONY += vdso_install
 vdso_install:
 	$(Q)$(MAKE) $(build)=arch/arm64/kernel/vdso $@
 
-Image.gz-dtb Image.lz4-dtb: vmlinux scripts dtbs
+Image.gz-dtb: vmlinux scripts dtbs
 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
 
 # We use MRPROPER_FILES and CLEAN_FILES now
@@ -93,7 +98,6 @@ archclean:
 
 define archhelp
   echo  '* Image.gz      - Compressed kernel image (arch/$(ARCH)/boot/Image.gz)'
-  echo  '* Image.lz4      - Compressed kernel image (arch/$(ARCH)/boot/Image.lz4)'
   echo  '  Image         - Uncompressed kernel image (arch/$(ARCH)/boot/Image)'
   echo  '* dtbs          - Build device tree blobs for enabled boards'
   echo  '  install       - Install uncompressed kernel'
