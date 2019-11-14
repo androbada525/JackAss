@@ -34,8 +34,6 @@ export SUBARCH=arm64
 export KBUILD_BUILD_USER="androbada525"
 export KBUILD_BUILD_HOST="nightingdale"
 export CROSS_COMPILE="/home/krittin/aarch64-linux-android-8.x/bin/aarch64-linux-android-"
-cd arch/arm/boot/dts/include/
-ln -s ../../../../../include/dt-bindings
 
 # Compilation Scripts Are Below
 compile_kernel ()
