@@ -13,7 +13,7 @@
 
 #include "../skeleton64.dtsi"
 #include "../../../../../../include/dt-bindings/clock/msm-clocks-8976.h"
-#include <dt-bindings/regulator/qcom,rpm-smd-regulator.h>
+#include "../../../../../../include/dt-bindings/regulator/qcom,rpm-smd-regulator.h"
 
 / {
 	model = "Qualcomm Technologies, Inc. MSM 8956";
