@@ -10,7 +10,7 @@
  * GNU General Public License for more details.
  */
 
-#include <dt-bindings/msm/msm-bus-ids.h>
+#include "../../../../../include/dt-bindings/msm/msm-bus-ids.h"
 
 &soc {
 	/* Version = 3 */

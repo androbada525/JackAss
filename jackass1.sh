@@ -14,7 +14,7 @@
 
 # Init Script
 KERNEL_DIR=$PWD
-ZIMAGE=$KERNEL_DIR/arch/arm/boot/zImage
+ZIMAGE=$KERNEL_DIR/BUILT_kenzo-losN/
 BUILD_START=$(date +"%s")
 
 # Color Code Script
@@ -32,7 +32,7 @@ nocol='\033[0m'         # Default
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER="androbada525"
-export KBUILD_BUILD_HOST="nightingdale"
+export KBUILD_BUILD_HOST="nightingale"
 export CROSS_COMPILE="/home/krittinkalra/aarch64-linux-android-8.x/bin/aarch64-linux-android-"
 
 # Compilation Scripts Are Below
@@ -43,7 +43,17 @@ echo "         Compiling JackAss kernel             "
 echo -e "***********************************************$nocol"
 make clean && make mrproper
 make jackass_kenzo-losN_defconfig
+
+
 make -j4
+
+rm -rf $KERNEL_DIR/BUILT_kenzo-losN
+mkdir -p $KERNEL_DIR/BUILT_kenzo-losN
+
+find -name '*.ko' -exec mv -v {} $KERNEL_DIR/BUILT_kenzo-losN/ 
+
+mv $KERNEL_DIR/arch/arm64/boot/Image.*-dtb $KERNEL_DIR/BUILT_kenzo-losN/
+
 if ! [ -a $ZIMAGE ];
 then
 echo -e "$Red Kernel Compilation failed! Fix the errors! $nocol"
