@@ -33,7 +33,7 @@ export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER="androbada525"
 export KBUILD_BUILD_HOST="nightingdale"
-export CROSS_COMPILE="/home/krittin/aarch64-linux-android-8.x/bin/aarch64-linux-android-"
+export CROSS_COMPILE="/home/krittinkalra/aarch64-linux-android-8.x/bin/aarch64-linux-android-"
 
 # Compilation Scripts Are Below
 compile_kernel ()
