@@ -45,7 +45,7 @@ echo -e "***********************************************"
 # Finally build it
 make clean && make mrproper
 make jackass_kenzo-losN_defconfig
-make -j6
+make -j32
 
 echo -e "$yellow***********************************************"
 echo  "                 Zipping up                    "
