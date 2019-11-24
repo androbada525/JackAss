@@ -27,9 +27,9 @@ BUILD_START=$(date +"%s")
 rm -rf $Anykernel_DIR/*zip
 rm -rf $Anykernel_DIR/Image.gz-dtb
 rm -rf arch/arm64/boot/Image
-rm -rf arch/arm64/boot/dts/qcom/kenzo-msm8956-mtp.dtb
+rm -rf out/arch/arm/boot/dts/qcom/kenzo-msm8956-mtp.dtb
 rm -rf arch/arm64/boot/Image.gz
-rm -rf arch/arm64/boot/Image.gz-dtb
+rm -rf out/arch/arm64/boot/Image.gz-dtb
 
 # Export few variables
 export KBUILD_BUILD_USER="KrittinKalra"
@@ -52,7 +52,7 @@ echo  "                 Zipping up                    "
 echo -e "***********************************************"
 
 # Create the flashable zip
-cp arch/arm64/boot/Image.gz-dtb $Anykernel_DIR
+cp out/arch/arm64/boot/Image.gz-dtb $Anykernel_DIR
 cd $Anykernel_DIR
 zip -r9 $FINAL_ZIP.zip * -x .git README.md *placeholder
 
@@ -64,9 +64,9 @@ echo -e "***********************************************$default"
 cd ../
 rm -rf $Anykernel_DIR/Image.gz-dtb
 rm -rf arch/arm64/boot/Image
-rm -rf arch/arm64/boot/dts/qcom/kenzo-msm8956-mtp.dtb
+rm -rf out/arch/arm/boot/dts/qcom/kenzo-msm8956-mtp.dtb
 rm -rf arch/arm64/boot/Image.gz
-rm -rf arch/arm64/boot/Image.gz-dtb
+rm -rf out/arch/arm64/boot/Image.gz-dtb
 make clean && make mrproper
 
 # Build complete
